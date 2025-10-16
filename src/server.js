@@ -18,13 +18,12 @@ app.use(logger);
 app.use(express.json());
 app.use(cors());
 
-// GET /students — список усіх студентів
+// GET
 app.use(notesRoutes);
 
 
-// Middleware 404
+// Middleware
 app.use(notFoundHandler);
-// Middleware для обробки помилок
 app.use(errorHandler);
 
 await connectMongoDB();

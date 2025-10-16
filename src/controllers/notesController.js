@@ -1,30 +1,41 @@
 
+import createHttpError from 'http-errors';
 import { NoteSchema } from '../models/note.js';
 
-export const getNotes = async (req, res) => {
+export const getAllNotes = async (req, res) => {
   const notes = await NoteSchema.find();
   res.status(200).json(notes);
 };
 
-export const getNoteId = async (req, res) => {
+export const getNoteById = async (req, res, next) => {
   const { noteId } = req.params;
   const note = await NoteSchema.findById(noteId);
 
   if (!note) {
-    return res.status(404).json({ message: 'Student not found' })
+    next(createHttpError(404, 'Route not found'));
+    return;
   }
 
   res.status(200).json(note);
 };
 
-export const deleteNote = async (req, res) => {
+export const createNote = async (req, res) => {
+  const note = await NoteSchema.create(req.body);
+  res.status(201).json(note);
+};
+
+export const deleteNote = async (req, res, next) => {
   const { noteId } = req.params;
+  const note = await NoteSchema.findOneAndDelete({
+    _id: noteId,
+  });
 
-  if (!noteId) {
-  return res.status(404).json({ message: 'Student not found' })
-}
+  if (!note) {
+    next(createHttpError(404, "Student not found"));
+    return;
+  }
 
-  res.status(200).json(noteId);
+  res.status(200).json(note);
 };
 
 

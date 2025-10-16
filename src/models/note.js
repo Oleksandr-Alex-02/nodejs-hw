@@ -11,16 +11,14 @@ const noteSchema = new Schema({
   content: {
     type: String,
     required: true,
+    trim: true,
   },
   tag: {
     type: String,
-    required: true,
-    enum: ['Shopping', 'Meeting', 'Travel', 'Health', 'Work', 'Finance', 'Personal', 'Ideas'],
+    timestamps: true,
+    enum: ['Work', 'Personal', 'Meeting', 'Shopping', 'Ideas', 'Travel', 'Finance', 'Health', 'Important', 'Todo'],
   },
 });
 
 export const NoteSchema = model('Note', noteSchema);
-
-
-
 
