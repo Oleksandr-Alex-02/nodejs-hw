@@ -26,9 +26,7 @@ export const createNote = async (req, res) => {
 
 export const deleteNote = async (req, res, next) => {
   const { noteId } = req.params;
-  const note = await NoteSchema.findOneAndDelete({
-    _id: noteId,
-  });
+  const note = await NoteSchema.findOneAndDelete({_id: noteId,});
 
   if (!note) {
     next(createHttpError(404, "Student not found"));
