@@ -24,6 +24,23 @@ export const createNote = async (req, res) => {
   res.status(201).json(note);
 };
 
+export const updateNote = async (req, res, next) => {
+  const { noteId } = req.params;
+
+  const note = await NoteSchema.findOneAndUpdate(
+    { _id: noteId },
+    req.body,
+    { new: true },
+  );
+
+  if (!note) {
+    next(createHttpError(404, 'Route not found'));
+    return;
+  }
+
+  res.status(200).json(note);
+}
+
 export const deleteNote = async (req, res, next) => {
   const { noteId } = req.params;
   const note = await NoteSchema.findOneAndDelete({_id: noteId,});
