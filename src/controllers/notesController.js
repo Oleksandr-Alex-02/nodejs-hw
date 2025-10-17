@@ -2,6 +2,8 @@
 import createHttpError from 'http-errors';
 import { NoteSchema } from '../models/note.js';
 
+const notFound404 = createHttpError(404, 'Route not found')
+
 export const getAllNotes = async (req, res) => {
   const notes = await NoteSchema.find();
   res.status(200).json(notes);
@@ -12,7 +14,7 @@ export const getNoteById = async (req, res, next) => {
   const note = await NoteSchema.findById(noteId);
 
   if (!note) {
-    next(createHttpError(404, 'Route not found'));
+    next(notFound404);
     return;
   }
 
@@ -34,7 +36,7 @@ export const updateNote = async (req, res, next) => {
   );
 
   if (!note) {
-    next(createHttpError(404, 'Route not found'));
+    next(notFound404);
     return;
   }
 
@@ -46,7 +48,7 @@ export const deleteNote = async (req, res, next) => {
   const note = await NoteSchema.findOneAndDelete({_id: noteId,});
 
   if (!note) {
-    next(createHttpError(404, "Student not found"));
+    next(notFound404);
     return;
   }
 

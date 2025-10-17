@@ -21,7 +21,6 @@ app.use(cors());
 // GET
 app.use(notesRoutes);
 
-
 // Middleware
 app.use(notFoundHandler);
 app.use(errorHandler);
