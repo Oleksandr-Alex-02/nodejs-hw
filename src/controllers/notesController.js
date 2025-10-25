@@ -5,8 +5,18 @@ import { NoteSchema } from '../models/note.js';
 const notFound404 = createHttpError(404, 'Route not found')
 
 export const getAllNotes = async (req, res) => {
-  const notes = await NoteSchema.find();
-  res.status(200).json(notes);
+
+  const { page = 1, perPage = 10 } = req.query;
+  const skip = (page - 1) * perPage;
+  const notesQuery = NoteSchema.find();
+
+  const [totalNotes, notes] = await Promise.all([
+    notesQuery.clone().countDocuments(),
+    notesQuery.skip(skip).limit(perPage),
+  ]);
+
+  const totalPages = Math.ceil(totalNotes / perPage);
+  res.status(200).json({page, perPage, totalNotes, totalPages, notes});
 };
 
 export const getNoteById = async (req, res, next) => {

@@ -6,6 +6,13 @@ const objectIdValidator = (value, helpers) => {
   return !isValidObjectId(value) ? helpers.message('Invalid id format') : value;
 };
 
+export const getNoteSchema = {
+  [Segments.QUERY]: Joi.object({
+    page: Joi.number().integer().min(1).default(1),
+    perPage: Joi.number().integer().default(10),
+  }),
+};
+
 export const createNoteSchema = {
 
   [Segments.BODY]: Joi.object({
@@ -38,3 +45,4 @@ export const updateNoteSchema = {
     tag: Joi.string().valid('Work', 'Personal', 'Meeting', 'Shopping', 'Ideas', 'Travel', 'Finance', 'Health', 'Important', 'Todo'),
   }).min(1),
 };
+
