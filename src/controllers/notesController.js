@@ -6,9 +6,15 @@ const notFound404 = createHttpError(404, 'Route not found')
 
 export const getAllNotes = async (req, res) => {
 
-  const { page = 1, perPage = 10, tag } = req.query;
+  const { page = 1, perPage = 10, tag, search  } = req.query;
   const skip = (page - 1) * perPage;
   const notesQuery = NoteSchema.find();
+
+  if (search) {
+  notesQuery.where({
+	  $text: { $search: search }
+	});
+}
 
   if (tag) {
     notesQuery.where("tag").equals(tag);
