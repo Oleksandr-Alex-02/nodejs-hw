@@ -1,7 +1,8 @@
 import { Joi, Segments } from 'celebrate';
 import { isValidObjectId } from 'mongoose';
 
-// Кастомний валідатор для ObjectId
+import { TAGS } from '../constants/tags.js';
+
 const objectIdValidator = (value, helpers) => {
   return !isValidObjectId(value) ? helpers.message('Invalid id format') : value;
 };
@@ -9,7 +10,7 @@ const objectIdValidator = (value, helpers) => {
 export const getNoteSchema = {
   [Segments.QUERY]: Joi.object({
     page: Joi.number().integer().min(1).default(1),
-    perPage: Joi.number().integer().default(10),
+    perPage: Joi.number().integer().min(5).max(20).default(10),
   }),
 };
 
@@ -22,7 +23,7 @@ export const createNoteSchema = {
       "any.required": "Name is required",
     }),
     content: Joi.string(),
-    tag: Joi.string().valid('Work', 'Personal', 'Meeting', 'Shopping', 'Ideas', 'Travel', 'Finance', 'Health', 'Important', 'Todo').required().messages({
+    tag: Joi.string().valid(...TAGS).required().messages({
       "any.only": "Gender must be one of: male, female, or other",
       "any.required": "Gender is required",
     }),
@@ -40,9 +41,9 @@ export const updateNoteSchema = {
     noteId: Joi.string().custom(objectIdValidator).required(),
   }),
   [Segments.BODY]: Joi.object({
-    title: Joi.string().min(1).required(),
+    title: Joi.string().min(1),
     content: Joi.string(),
-    tag: Joi.string().valid('Work', 'Personal', 'Meeting', 'Shopping', 'Ideas', 'Travel', 'Finance', 'Health', 'Important', 'Todo'),
+    tag: Joi.string().valid(...TAGS),
   }).min(1),
 };
 
