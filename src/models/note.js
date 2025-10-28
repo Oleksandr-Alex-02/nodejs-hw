@@ -11,16 +11,24 @@ const noteSchema = new Schema({
   },
   content: {
     type: String,
-    required: true,
+    required: false,
+    default: '',
     trim: true,
   },
   tag: {
     type: String,
-    timestamps: true,
-    enum: TAGS,
+    required: false,
+    default: 'Todo',
+    enum: ['Work', 'Personal', 'Meeting', 'Shopping', 'Ideas', 'Travel', 'Finance', 'Health', 'Important', 'Todo'],
   },
-});
+},
+  {
+    timestamps: true,
+    versionKey: false,
+  }
+
+);
 
 noteSchema.index({ title: "text", content: "text" });
 
-export const NoteSchema = model('Note', noteSchema);
+export const Note = model('Note', noteSchema);

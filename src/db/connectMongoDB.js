@@ -1,6 +1,6 @@
 
 import mongoose from 'mongoose';
-import { NoteSchema } from '../models/note.js';
+import { Note } from '../models/note.js';
 
 export const connectMongoDB = async () => {
   try {
@@ -8,7 +8,7 @@ export const connectMongoDB = async () => {
     await mongoose.connect(mongoUrl);
     console.log('✅ MongoDB connection established successfully');
 
-    await NoteSchema.syncIndexes();
+    await Note.syncIndexes();
 
   } catch (error) {
     console.error('❌ Failed to connect to MongoDB:', error.message);

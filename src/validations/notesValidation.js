@@ -6,7 +6,7 @@ const objectIdValidator = (value, helpers) => {
   return !isValidObjectId(value) ? helpers.message('Invalid id format') : value;
 };
 
-export const getNoteSchema = {
+export const getAllNotesSchema = {
   [Segments.QUERY]: Joi.object({
     page: Joi.number().integer().min(1).default(1),
     perPage: Joi.number().integer().min(5).max(20).default(10),
@@ -19,14 +19,14 @@ export const createNoteSchema = {
 
   [Segments.BODY]: Joi.object({
     title: Joi.string().min(1).required().messages({
-      "string.base": "Name must be a string",
-      "string.min": "Name should have at least {#limit} characters",
-      "any.required": "Name is required",
+      "string.base": "Title must be a string",
+      "string.min": "Title should have at least {#limit} characters",
+      "any.required": "Title is required",
     }),
-    content: Joi.string(),
-    tag: Joi.string().valid(...TAGS).required().messages({
-      "any.only": "Gender must be one of: male, female, or other",
-      "any.required": "Gender is required",
+    content: Joi.string().default(''),
+    tag: Joi.string().valid(...TAGS).messages({
+      "any.only": "Select a tag",
+      "any.required": "Tag is required",
     }),
   }),
 };
