@@ -4,7 +4,6 @@ import express from 'express';
 import 'dotenv/config';
 
 import { connectMongoDB } from './db/connectMongoDB.js';
-import { NoteSchema } from './models/note.js';
 import { notFoundHandler } from './middleware/notFoundHandler.js';
 import { errorHandler } from './middleware/errorHandler.js';
 import { logger } from './middleware/logger.js';
