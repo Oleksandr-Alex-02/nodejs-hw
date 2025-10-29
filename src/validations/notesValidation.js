@@ -23,7 +23,7 @@ export const createNoteSchema = {
       "string.min": "Title should have at least {#limit} characters",
       "any.required": "Title is required",
     }),
-    content: Joi.string().default(''),
+    content: Joi.string().allow('').default(''),
     tag: Joi.string().valid(...TAGS).messages({
       "any.only": "Select a tag",
       "any.required": "Tag is required",
