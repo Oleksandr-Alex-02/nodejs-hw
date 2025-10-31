@@ -1,7 +1,7 @@
 
 import bcrypt from "bcrypt";
 import createHttpError from "http-errors";
-import { User } from "../models/user";
+import { User } from "../models/user.js";
 
 export const registerUser = async (req, res, next) => {
   const { email, password } = req.body;
@@ -19,4 +19,20 @@ export const registerUser = async (req, res, next) => {
   });
 
   res.status(201).json(newUser);
+};
+
+export const loginUser = async (req, res, next) => {
+  const { email, password } = req.body;
+
+  const user = await User.findOne({ email });
+  if (!user) {
+    return next(createHttpError(404, 'Invalid credentials'));
+  };
+
+    const isValidPassword = bcrypt.compare(password, user.password);
+  if (!isValidPassword) {
+    return next(createHttpError(401, 'Invalid credentials'));
+  }
+
+  res.status(200).json(user);
 };
