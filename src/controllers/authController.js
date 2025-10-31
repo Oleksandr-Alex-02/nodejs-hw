@@ -1,8 +1,11 @@
 
 import bcrypt from "bcrypt";
 import createHttpError from "http-errors";
+import { createSession } from "../services/auth.js";
+import { Session } from "../models/session.js";
 import { User } from "../models/user.js";
 
+//Регістрація
 export const registerUser = async (req, res, next) => {
   const { email, password } = req.body;
 
@@ -16,11 +19,14 @@ export const registerUser = async (req, res, next) => {
    const newUser = await User.create({
     email,
     password: hashedPassword,
-  });
+   });
+
+  const newSession = await createSession(newUser._id);
 
   res.status(201).json(newUser);
 };
 
+//Login
 export const loginUser = async (req, res, next) => {
   const { email, password } = req.body;
 
@@ -32,7 +38,11 @@ export const loginUser = async (req, res, next) => {
     const isValidPassword = bcrypt.compare(password, user.password);
   if (!isValidPassword) {
     return next(createHttpError(401, 'Invalid credentials'));
-  }
+  };
+
+    await Session.deleteOne({ userId: user._id });
+
+  const newSession = await createSession(user._id);
 
   res.status(200).json(user);
 };
