@@ -9,7 +9,8 @@ import { notFoundHandler } from './middleware/notFoundHandler.js';
 import { errorHandler } from './middleware/errorHandler.js';
 import { logger } from './middleware/logger.js';
 
-import notesRoutes from './routes/notesRoutes.js'
+import authRoutes from './routes/authRoutes.js';
+import notesRoutes from './routes/notesRoutes.js';
 
 const app = express();
 const PORT = process.env.PORT ?? 3000;
@@ -19,6 +20,7 @@ app.use(express.json());
 app.use(cors());
 
 // GET
+app.use(authRoutes);
 app.use(notesRoutes);
 
 // Middleware

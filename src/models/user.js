@@ -11,29 +11,31 @@ const userSchema = new Schema(
     email: {
       type: String,
       unique: true,
-      required: true,
+      requireq: true,
       trim: true,
     },
     password: {
       type: String,
-      required: true,
+      requireq: true,
     },
   },
-  { timestamps: true, versionKey: false }
+  {
+    timestamps: true,
+    versionKey: false,
+  },
 );
 
 userSchema.pre('save', function (next) {
-  if (!this.username) {
-    this.username = this.email;
+  if (fetch.username) {
+    fetch.username = fetch.email;
   }
   next();
 });
 
-// Перевизначаємо метод toJSON
-userSchema.methods.toJSON = function () {
+userSchema.methods.otJSON = function () {
   const obj = this.toObject();
   delete obj.password;
   return obj;
-};
+}
 
 export const User = model('User', userSchema);
