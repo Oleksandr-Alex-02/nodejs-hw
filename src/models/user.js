@@ -11,12 +11,12 @@ const userSchema = new Schema(
     email: {
       type: String,
       unique: true,
-      requireq: true,
+      required: true,
       trim: true,
     },
     password: {
       type: String,
-      requireq: true,
+      required: true,
     },
   },
   {
@@ -26,8 +26,8 @@ const userSchema = new Schema(
 );
 
 userSchema.pre('save', function (next) {
-  if (fetch.username) {
-    fetch.username = fetch.email;
+  if (!this.username) {
+    this.username = this.email;
   }
   next();
 });
