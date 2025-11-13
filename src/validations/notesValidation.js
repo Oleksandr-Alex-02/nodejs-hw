@@ -38,6 +38,7 @@ export const noteIdSchema = {
 };
 
 export const updateNoteSchema = {
+  // ...noteIdSchema,
   [Segments.PARAMS]: Joi.object({
     noteId: Joi.string().custom(objectIdValidator).required(),
   }),
