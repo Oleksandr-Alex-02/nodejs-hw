@@ -1,13 +1,15 @@
 import { User } from "../models/user.js";
 import { saveFileToCloudinary } from '../utils/saveFileToCloudinary.js';
 
-export const userController = async (req, res) => {
-  const { email } = req.body;
+import createHttpError from "http-errors";
 
-  const user = await User.findOne({ email });
+// export const userController = async (req, res) => {
+//   const { email } = req.body;
 
-  res.status(200).json({message: 'Password reset email sent successfully'});
-}
+//   const user = await User.findOne({ email });
+
+//   res.status(200).json({message: 'Password reset email sent successfully'});
+// }
 
 export const updateUserAvatar = async (req, res, next) => {
 
